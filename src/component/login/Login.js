@@ -8,6 +8,7 @@ import { useNavigate } from "react-router";
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -17,6 +18,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     const url = "https://v2napi.com/vfs_vacct/client/authenticate";
 
     const trimmedUsername = username.trim();
@@ -40,22 +42,27 @@ const Login = () => {
       if (data.status === 200) {
         localStorage.setItem("HNGx_token", data?.data?.access_token);
         localStorage.setItem("HNGx_stage3_login", "true");
+        setIsLoading(false);
         navigate("/");
       } else {
+        setIsLoading(false);
         setError("Username or password is incorrect");
       }
     } catch (error) {
       console.error(error);
+      setIsLoading(false);
       setError("An error occurred. Please try again later.");
     }
   };
 
   const handleInputClick = () => {
     setError("");
+    setIsLoading(false);
   };
 
   const handleInputChange = (e) => {
     setError("");
+    setIsLoading(false);
   };
 
   return (
@@ -94,7 +101,7 @@ const Login = () => {
           />
         </div>
         <button type="submit" className="login-button">
-          Login
+          {loading ? "otiloing otiloing" : "login"}
         </button>
       </form>
     </div>

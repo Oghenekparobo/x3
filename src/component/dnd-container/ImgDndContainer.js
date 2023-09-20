@@ -4,10 +4,24 @@ import "./styles.css";
 import Img from "../img-container/Img";
 import { sortList, unsplashImages } from "../../utils/data";
 import { useNavigate } from "react-router";
+import Header from "../header/Header";
 
 function ImgDndContainer() {
   const [imageSort, setImageSort] = useState(sortList(unsplashImages));
+  const [searchInput, setSearchInput] = useState("");
+  const [filteredImages, setFilteredImages] = useState([]);
+
   const navigate = useNavigate();
+  useEffect(() => {
+    if (searchInput === "") {
+      setFilteredImages(imageSort);
+    } else {
+      const filtered = imageSort.filter((image) =>
+        image.id.toLowerCase().includes(searchInput.toLowerCase())
+      );
+      setFilteredImages(filtered);
+    }
+  }, [imageSort, searchInput]);
 
   useEffect(() => {
     setImageSort(sortList(unsplashImages));
@@ -54,21 +68,30 @@ function ImgDndContainer() {
 
   return (
     <div className="container">
-      <div className="dummy-nav">
-        Image Gallery
-        <button className="sign-out-button" onClick={handleSignOut}>
-          Sign Out
-        </button>
-      </div>
+      <Header handleSignOut={handleSignOut} />
+
       <div className="dnd-component">
         <div className="cardGrid">
-          <ListManager
-            items={imageSort}
-            direction="horizontal"
-            maxItems={maxItems}
-            render={(images) => <Img image={images} />}
-            onDragEnd={reorderList}
-          />
+          <div className="search-bar">
+            <input
+              className="search-input"
+              type="text"
+              placeholder="Search by tag (e.g. unsplash-1)"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+            />
+          </div>
+          {filteredImages.length === 0 ? (
+            <div className="no-images-found">No images found</div>
+          ) : (
+            <ListManager
+              items={filteredImages}
+              direction="horizontal"
+              maxItems={maxItems}
+              render={(images) => <Img image={images} />}
+              onDragEnd={reorderList}
+            />
+          )}
         </div>
       </div>
     </div>
