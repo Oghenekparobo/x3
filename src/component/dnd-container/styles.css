@@ -1,0 +1,26 @@
+.dnd-component {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cardGrid [data-react-beautiful-dnd-droppable] {
+  gap: 35px;
+  margin-top: 2rem;
+}
+
+
+
+
+@media (max-width: 768px) {
+  .cardGrid [data-react-beautiful-dnd-droppable] {
+    gap: 15px;
+  }
+}
+
+
+@media (max-width: 576px) {
+  .cardGrid [data-react-beautiful-dnd-droppable] {
+    gap: 15px;
+  }
+}
