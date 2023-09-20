@@ -5,7 +5,7 @@ import { Gallery, Loginpage, Logout } from "./pages";
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/">
       <Routes>
         <Route path="/" element={<Gallery />} />
         <Route path="/login" element={<Loginpage />} />
